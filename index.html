@@ -3,128 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Project Preview</title>
+    <title>Premium Medical Platform</title>
     <style>
-        :root {
-            --amboss-blue: #0066cc;
-            --medical-green: #00d28d;
-            --bg-color: #ffffff;
+        /* 1. RESET & LOCK SCREEN */
+        body, html { 
+            margin: 0; padding: 0; 
+            background: #ffffff; 
+            overflow: hidden; /* Stops scrolling while loading */
         }
 
-        body, html { margin: 0; padding: 0; background-color: var(--bg-color); font-family: 'Helvetica Neue', Arial, sans-serif; }
-
-        /* THE AMBOSS-STYLE PRELOADER */
+        /* 2. THE AMBOSS-STYLE OVERLAY */
         #preloader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: #ffffff;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            /* This "Cubic Bezier" makes the transition look expensive */
-            transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1), opacity 0.5s ease;
+            z-index: 10000;
+            /* Cubic-bezier makes the "Expensive" smooth transition */
+            transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        .logo-wrapper {
+        /* 3. LOGO BOX (SMALL & CLEAN) */
+        .logo-box {
+            width: 130px; /* Reduced size for elegance */
             position: relative;
-            width: 220px;
-            animation: ambossPulse 3s ease-in-out infinite;
+            /* Subtle floating pulse effect */
+            animation: ambossFloat 4s ease-in-out infinite;
         }
 
-        /* YOUR 3D LOGO EFFECT */
         #logo-img {
             width: 100%;
-            filter: drop-shadow(0 30px 50px rgba(0,0,0,0.12));
-            /* Refined tilt effect */
-            transform-style: preserve-3d;
+            height: auto;
+            /* Modern medical shadow (Soft and Blue-toned) */
+            filter: drop-shadow(0 20px 40px rgba(0, 102, 204, 0.1));
         }
 
-        /* The Gold/Green Glint (Drawing effect like Amboss) */
-        .glint {
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent);
-            animation: glintEffect 4s infinite;
+        /* 4. THE ANIMATIONS */
+        @keyframes ambossFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-12px) scale(1.02); }
         }
 
-        /* THE LOADING BAR (Amboss often uses a subtle top bar) */
-        #loading-bar {
-            position: absolute;
-            bottom: 100px;
-            width: 150px;
-            height: 2px;
-            background: #eee;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        #progress {
-            width: 0%;
-            height: 100%;
-            background: var(--amboss-blue);
-            animation: grow 2.5s ease-out forwards;
-        }
-
-        @keyframes ambossPulse {
-            0%, 100% { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.03) translateY(-10px); }
-        }
-
-        @keyframes glintEffect {
-            0% { left: -100%; }
-            20% { left: 100%; }
-            100% { left: 100%; }
-        }
-
-        @keyframes grow {
-            from { width: 0%; }
-            to { width: 100%; }
-        }
-
-        /* HIDING ANIMATION (Slides up like a curtain) */
+        /* THE EXIT (When loading is finished) */
         .loaded #preloader {
-            transform: translateY(-100%);
-        }
-
-        /* MOCK CONTENT - This shows after loading */
-        .content {
-            padding: 100px;
-            text-align: center;
             opacity: 0;
-            transition: opacity 1s ease 0.8s;
+            visibility: hidden;
+            transform: scale(1.2); /* Scales up slightly while fading out */
         }
-        .loaded .content { opacity: 1; }
 
+        /* 5. MAIN WEBSITE AREA */
+        .site-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease 0.6s;
+            text-align: center;
+            padding: 15vh 0;
+            font-family: -apple-system, sans-serif;
+        }
+
+        .loaded .site-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
 
+    <!-- CLEAN LOADING SCREEN -->
     <div id="preloader">
-        <div class="logo-wrapper">
-            <!-- Ensure your image file name matches this exactly -->
+        <div class="logo-box">
+            <!-- RENAME YOUR FILE TO logo.png (lowercase) IN GITHUB -->
             <img src="logo.png" id="logo-img" alt="Medical Symbol">
-            <div class="glint"></div>
         </div>
-        <div id="loading-bar"><div id="progress"></div></div>
     </div>
 
-    <div class="content">
-        <h1>Welcome to Your New Platform</h1>
-        <p>This is where your home page content will appear.</p>
+    <!-- MAIN PAGE CONTENT (REVEALED AFTER LOADING) -->
+    <div class="site-content">
+        <h1 style="color:#1a3a5a; font-weight:300; letter-spacing:2px;">PHARMAVEERA HUB</h1>
+        <p style="color:#666; font-size:14px;">Building the future of medical intelligence.</p>
     </div>
 
     <script>
-        window.addEventListener('load', () => {
-            // Slight delay for the "wow" factor
-            setTimeout(() => {
+        // Detection: Waits for your image to be ready
+        window.addEventListener('load', function() {
+            setTimeout(function() {
                 document.body.classList.add('loaded');
-            }, 2500); 
+                document.body.style.overflow = 'auto'; // Re-enable scrolling
+            }, 2500); // 2.5 seconds - perfect amount for a premium feel
         });
     </script>
 </body>
