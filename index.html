@@ -3,95 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Medical Platform</title>
+    <title>PharmaVeera Premium</title>
     <style>
-        /* 1. RESET & LOCK SCREEN */
+        /* 1. CLINICAL ENVIRONMENT */
         body, html { 
             margin: 0; padding: 0; 
             background: #ffffff; 
-            overflow: hidden; /* Stops scrolling while loading */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
-        /* 2. THE AMBOSS-STYLE OVERLAY */
+        /* 2. THE LOADING STAGE */
         #preloader {
             position: fixed;
             inset: 0;
-            background: #ffffff;
+            background: radial-gradient(circle at center, #ffffff 0%, #f7f9fc 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            /* Cubic-bezier makes the "Expensive" smooth transition */
-            transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 1.2s cubic-bezier(0.86, 0, 0.07, 1);
         }
 
-        /* 3. LOGO BOX (SMALL & CLEAN) */
-        .logo-box {
-            width: 130px; /* Reduced size for elegance */
+        /* 3. LOGO CONTAINER */
+        .stage {
             position: relative;
-            /* Subtle floating pulse effect */
-            animation: ambossFloat 4s ease-in-out infinite;
+            width: 140px; /* Small, clean, premium size */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #logo-img {
             width: 100%;
-            height: auto;
-            /* Modern medical shadow (Soft and Blue-toned) */
-            filter: drop-shadow(0 20px 40px rgba(0, 102, 204, 0.1));
+            z-index: 2;
+            /* Creates the 3D 'pop' */
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.08));
+            animation: medicalFloat 4s ease-in-out infinite;
         }
 
-        /* 4. THE ANIMATIONS */
-        @keyframes ambossFloat {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-12px) scale(1.02); }
+        /* 4. THE COOL STUFF: DYNAMIC 3D SHADOW */
+        .floor-shadow {
+            width: 70px;
+            height: 12px;
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 50%;
+            filter: blur(6px);
+            margin-top: -10px;
+            z-index: 1;
+            animation: shadowPulse 4s ease-in-out infinite;
         }
 
-        /* THE EXIT (When loading is finished) */
-        .loaded #preloader {
+        /* 5. METALLIC WING GLINT (Moves across the gold) */
+        .stage::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(
+                to right, 
+                transparent, 
+                rgba(255, 255, 255, 0.6), 
+                transparent
+            );
+            transform: skewX(-25deg);
+            z-index: 3;
+            animation: glint 3s infinite;
+        }
+
+        /* ANIMATION KEYFRAMES */
+        @keyframes medicalFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            50% { transform: translateY(-20px) rotate(1.5deg) scale(1.02); }
+        }
+
+        @keyframes shadowPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(0.6); opacity: 0.1; }
+        }
+
+        @keyframes glint {
+            0% { left: -100%; }
+            35% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* SMOOTH DISAPPEARANCE */
+        .finished-loading #preloader {
             opacity: 0;
+            transform: scale(1.1);
             visibility: hidden;
-            transform: scale(1.2); /* Scales up slightly while fading out */
-        }
-
-        /* 5. MAIN WEBSITE AREA */
-        .site-content {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease 0.6s;
-            text-align: center;
-            padding: 15vh 0;
-            font-family: -apple-system, sans-serif;
-        }
-
-        .loaded .site-content {
-            opacity: 1;
-            transform: translateY(0);
         }
     </style>
 </head>
 <body>
 
-    <!-- CLEAN LOADING SCREEN -->
     <div id="preloader">
-        <div class="logo-box">
-            <!-- RENAME YOUR FILE TO logo.png (lowercase) IN GITHUB -->
-            <img src="logo.png" id="logo-img" alt="Medical Symbol">
+        <div class="stage">
+            <!-- Ensure your image file in GitHub is named exactly: logo.png -->
+            <img src="logo.png" id="logo-img" alt="PharmaVeera Logo">
+            <div class="floor-shadow"></div>
         </div>
     </div>
 
-    <!-- MAIN PAGE CONTENT (REVEALED AFTER LOADING) -->
-    <div class="site-content">
-        <h1 style="color:#1a3a5a; font-weight:300; letter-spacing:2px;">PHARMAVEERA HUB</h1>
-        <p style="color:#666; font-size:14px;">Building the future of medical intelligence.</p>
-    </div>
-
     <script>
-        // Detection: Waits for your image to be ready
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.body.classList.add('loaded');
-                document.body.style.overflow = 'auto'; // Re-enable scrolling
-            }, 2500); // 2.5 seconds - perfect amount for a premium feel
+        window.addEventListener('load', () => {
+            // After site loads, stay for 3 seconds then fade out
+            setTimeout(() => {
+                document.body.classList.add('finished-loading');
+            }, 3000); 
         });
     </script>
 </body>
